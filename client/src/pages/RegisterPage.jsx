@@ -19,24 +19,27 @@ const RegisterPage = () => {
         }));
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Access the form data object here and perform further actions
-        axios.post('/register', {
-            firstName: formData.firstName,
-            lastName: formData.lastName,
-            contactNumber: formData.contactNumber,
-            email: formData.email,
-            password: formData.password
+    const handleRegister = async (e) => {
+      e.preventDefault();
+      try {
+        await axios.post('/register', {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          contactNumber: formData.contactNumber,
+          email: formData.email,
+          password: formData.password
         });
-        console.log(formData);
-      };
+        alert('Registration successful. Please Login');
+      } catch (e) {
+        alert('Registration failed. Please try again later');
+      }
+    };
 
     return (
       <div className="mt-4 grow flex items-center justify-around">
         <div className="mb-64">
           <h1 className="text-4xl text-center">Register</h1>
-          <form className="max-w-md mx-auto" onSubmit={handleSubmit}>
+          <form className="max-w-md mx-auto" onSubmit={handleRegister}>
             <input
               type="text"
               placeholder="First Name"
