@@ -28,7 +28,6 @@ const LoginPage = () => {
               password: formData.password
             }); 
             setUser(data);
-            alert('Login Successfully.');
             setRedirect(true);
         } catch (e) {
             alert('Login failed. Please try again later');

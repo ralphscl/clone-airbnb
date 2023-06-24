@@ -26,12 +26,16 @@ app.get('/test', (req, res) => {
 });
 
 app.get('/profile', (req, res) => {
+    // Get token from cookies
     const { token } = req.cookies;
     if(token) {
+        // Verify token with JWT Secrets
         jwt.verify(token, jwtSecret, {}, async (err, cookieData) => {
             if (err) throw err;
-            const { _id, email, firstName, lastName, contactNumber } = await User.findById(cookieData.id);
 
+            // Find user by ID
+            const { _id, email, firstName, lastName, contactNumber } = await User.findById(cookieData.id);
+            
             res.json({ _id, email, firstName, lastName, contactNumber });
         })
     } else {
@@ -44,6 +48,7 @@ app.post('/register', async (req, res) => {
     const{ firstName, lastName, contactNumber, email, password } = req.body;
 
     try {
+        // Create new User
         const userDoc = await User.create({
             firstName,
             lastName,
@@ -64,6 +69,7 @@ app.post('/login', async (req, res) => {
     const userDoc = await User.findOne({ email });
     
     if(userDoc) {
+        // Compare encrypted password with user input password
         const validatePassword = bcrypt.compareSync(password, userDoc.password);
         if(validatePassword) {
             jwt.sign({ id:userDoc._id, email:userDoc.email}, jwtSecret, {}, (err, token) => {

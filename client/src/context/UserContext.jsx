@@ -8,6 +8,7 @@ export const UserContextProvider = ({children}) => {
     const [user, setUser] = useState(null);
 
     useEffect(() => {
+        // Get data from cookie if page is reloaded after login
         if(!user) {
             axios.get('/profile').then(({data}) => {
                 setUser(data);
